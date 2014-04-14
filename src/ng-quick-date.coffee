@@ -25,6 +25,7 @@ app.provider "ngQuickDateDefaults", ->
       disableTimepicker: false
       disableClearButton: false
       defaultTime: null
+      defaultCalendarDate: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
       parseDateFunction: (str) ->
@@ -125,7 +126,10 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     # Set the date that is used by the calendar to determine which month to show
     # Defaults to the current month
     setCalendarDate = (val=null) ->
-      d = if val? then new Date(val) else new Date()
+      d = if val?
+        new Date(val)
+      else
+        stringToDate(scope.defaultCalendarDate) ? new Date()
       if (d.toString() == "Invalid Date")
         d = new Date()
       d.setDate(1)
